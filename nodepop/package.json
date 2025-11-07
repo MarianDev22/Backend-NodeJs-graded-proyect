@@ -2,6 +2,7 @@
   "name": "nodepop",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/MarianDev22/Backend_NodeJs_greaded_proyect/issues"
   },
-  "homepage": "https://github.com/MarianDev22/Backend_NodeJs_greaded_proyect#readme"
+  "homepage": "https://github.com/MarianDev22/Backend_NodeJs_greaded_proyect#readme",
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-validator": "^7.3.0",
+    "mongodb": "^7.0.0"
+  }
 }
