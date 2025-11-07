@@ -1,0 +1,19 @@
+{
+  "name": "nodepop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarianDev22/Backend_NodeJs_greaded_proyect.git"
+  },
+  "author": "Mariana Facorro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MarianDev22/Backend_NodeJs_greaded_proyect/issues"
+  },
+  "homepage": "https://github.com/MarianDev22/Backend_NodeJs_greaded_proyect#readme"
+}
