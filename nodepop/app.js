@@ -1,19 +1,26 @@
 import express from 'express';
+import { renderFile } from 'ejs';
 
 
 // Database
-import {connectMongoose} from './lib/connectMongoose.js';
+import { connectMongoose } from './lib/connectMongoose.js';
 
 // Middlewares
-import {serverErrorHandler} from './lib/middlewares/errorMiddleware.js'
+import { serverErrorHandler } from './lib/middlewares/errorMiddleware.js'
 
 // Routes
-//import { router as webRouter } from './routes/webRoutes.js';
+import { router as webRouter } from './routes/webRoutes.js';
 import { router as apiRouter } from './routes/apiRoutes.js';
 
 // -- EN OF IMPORTS --
 
 const app = express();
+
+app.use(express.static('public'));
+
+app.set('view engine', 'ejs');
+app.engine('html', renderFile);
+app.set('views', './views');
 
 //Connection to DB
 const connection = await connectMongoose();
@@ -34,7 +41,7 @@ app.use((req, res, next) => {
 //Filters
 
 //Routes
-//app.use('/', webRouter);
+app.use('/', webRouter);
 app.use('/api', apiRouter);
 
 app.use((req, res, next) => {
