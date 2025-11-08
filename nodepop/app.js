@@ -25,13 +25,12 @@ app.use(express.json());
 // template-engine
 
 //**MIDDLEWARES**
-
-
-//Environment
 app.use((req, res, next) => {
-
     next();
 });
+
+//Environment
+
 //Filters
 
 //Routes
