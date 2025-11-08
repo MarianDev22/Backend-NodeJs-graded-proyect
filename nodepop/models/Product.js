@@ -9,4 +9,4 @@ const productSchema = new Schema({
     },
 });
 
-export const Agent = mongoose.model('Agent', agentSchema);
+export const Product = mongoose.model('Product', productSchema );

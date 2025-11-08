@@ -7,7 +7,8 @@ import mongoose from 'mongoose';
 // Middlewares
 
 // Routes
-
+import { router as webRouter } from './routes/webRoutes.js';
+import { router as apiRouter } from './routes/apiRoutes.js';
 // -- Finish imports --
 
 const app = express();
@@ -20,13 +21,17 @@ console.log(`Connected to MongoDB: ${connection.name}`);
 // template-engine
 
 //**MIDDLEWARES**
+import { serverErrorHandler } from './lib/middlewares/errorMiddleware.js';
 
 //Environment
 
-//FilerS
+//Filters
 
 //Routes
+app.use('/', webRouter);
+app.use('/api', apiRouter);
 
 //Error handlers
+app.use(serverErrorHandler);
 
 export default app;
