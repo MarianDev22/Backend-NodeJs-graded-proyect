@@ -5,7 +5,9 @@
   "type": "module",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --env-file=.env bin/www",
+    "start": "node bin/www"
   },
   "repository": {
     "type": "git",
@@ -18,9 +20,14 @@
   },
   "homepage": "https://github.com/MarianDev22/Backend_NodeJs_greaded_proyect#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "connect-mongo": "^5.1.0",
     "ejs": "^3.1.10",
     "express": "^5.1.0",
+    "express-session": "^1.18.2",
     "express-validator": "^7.3.0",
-    "mongodb": "^7.0.0"
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.3",
+    "nodemon": "^3.1.10"
   }
 }
