@@ -6,7 +6,7 @@ import { renderFile } from 'ejs';
 import { connectMongoose } from './lib/connectMongoose.js';
 
 // Middlewares
-import { serverErrorHandler } from './lib/middlewares/errorMiddleware.js'
+import { serverErrorHandler, notFoundErrorHandler } from './lib/middlewares/errorMiddleware.js'
 
 // Routes
 import { router as webRouter } from './routes/webRoutes.js';

@@ -3,12 +3,13 @@ import { compare } from 'bcrypt';
 
 export const loginController = {
     index: (req,res,next) => {
-        res.end();
+        res.render('login.html');
 
     },
 
     login: (req, res, next) =>{
-        res.end();
+        console.log(req.body);
+        res.redir();
     },
 
     logout: (req, res, next) =>{
