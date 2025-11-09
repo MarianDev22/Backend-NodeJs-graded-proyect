@@ -9,19 +9,56 @@
 <body>
     <div class="container">
         <h2><%= title %></h2>
-        <h3><%= message %></h3>
+        <p class="text-muted"><%= message %></p>
     </div>
 
     <div class="container">
-        <p><%= `del usuario ${userId}` %></p>
+        <p><strong>Usuario ID:</strong> <%= userId %></p>
     </div>
-    <div class="container">
-        <ul>
-            <% for (let i=0; i< productos.length; i++) {%>
-            <li><%= productos[i].name%> - <%= `$ ${productos[i].price}`%> </li>
+    
+<form method="get" action="/products">
+      <label>Nombre: <input type="text" name="name"></label>
+      <label>Tag:
+        <select name="tag" >
+          <option value="">Todos</option>
+          <option value="work">work</option>
+          <option value="lifestyle">lifestyle</option>
+          <option value="motor">motor</option>
+          <option value="mobile">mobile</option>
+        </select>
+        </label>
+      <label>Precio mín: <input type="number" name="minPrice"></label>
+      <label>Precio máx: <input type="number" name="maxPrice"></label>
+      <label>Ordenar por:
+        <select name="sort">
+          <option value="name">Nombre</option>
+          <option value="price">Precio</option>
+        </select>
+        </label>
+      <button type="submit">Buscar</button>
+    </form>
+
+    <h2>Productos</h2>
+    <ul>
+      <% if (productos && productos.length > 0) { %>
+        <% productos.forEach(p => { %>
+          <li>
+            <strong><%= p.name %></strong> - $<%= p.price %>
+            <% if (p.tags && p.tags.length > 0) { %>
+              (<%= p.tags.join(', ') %>)
             <% } %>
-        </ul>
-    </div>
-    <a href="/addProduct" class="btn btn-primary">Nuevo producto</a>
-</body>
+            <form method="POST" action="/products/<%= p._id %>/delete" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas borrar este producto?');">
+                    Borrar
+                </button>
+            </form>
+        </li>
+        <% }) %>
+      <% } else { %>
+        <li>No hay productos disponibles</li>
+        <% } %>
+    </ul>
+
+    <a href="/addProduct">Nuevo producto</a>
+  </body>
 </html>

@@ -1,14 +1,42 @@
+import { validationResult, matchedData } from 'express-validator';
 import { Product } from '../models/Product.js';
 import { User } from '../models/User.js';
+
 
 export const productController ={
     getAll: async (req, res, next) => {
 
+        const result = validationResult(req);
+        const data = matchedData(req, {includeOptionals: true});
+        const filter = {};
+        
+        if (!result.isEmpty()) {
+           console.log('There are validation errors: ', result.array());
+        }
+
+        const userId = req.session.userId;
+        filter.owner = userId;
+
+        if (data.name) {
+            filter.name = new RegExp(`^${data.name}`, 'i');;
+        }
+        if (data.minPrice || data.maxPrice) {
+            filter.price = {};
+            if (data.minPrice) filter.price.$gte = data.minPrice;
+            if (data.maxPrice) filter.price.$lte = data.maxPrice;
+  }
+        if (data.tag) {
+            filter.tag = data.tag;
+        }
+        const sortField = data.sort || 'name'
+
     try {
-        const userId = req.session.userId
-        const products = await Product.find({
-            owner: userId
-        });
+        
+        const products = await Product.find(filter)
+            .skip(data.skip || 0)
+            .limit(data.limit || 100)
+            .sort({[sortField]: 1})
+
         console.table(products);
       
         res.render('products.html', {
@@ -16,37 +44,67 @@ export const productController ={
             message: 'Estos son los productos a la venta',
             userId,
             productos: products,
+            currentfilters: data
 
         });
     } catch(ex) {
-       res.status(500).json({
-                message: 'Internal Server Error'
-            })
+       next(ex);
         }
     
 },
-    // getAll: async (req, res, next) =>{
-    //     const userId = req.session.userId
-    //     try{
-    //         const products = await Product.find().populate('owner');
-    //         res.status(200).json(products);
-    //     } catch(err) {
-    //         res.status(500).json({
-    //             message: 'Internal Server Error'
-    //         })
-    //     }
-    // },
 
-    add: async (req, res, next) => {
-        const userData = req.body;
+    delete: async (req, res, next) => {
+        
+        const result = validationResult(req);
+        const data = matchedData(req);
 
-        const product = new Product({
-            name: req.body.name
+        if (!result.isEmpty()) {
+            return res.status(400).json({
+                errors:result.errors
+            })
+        }
+        
+    try {
+        const userId = req.session.userId;
+        const productId = req.params.id;
+        const deleteResult = await Product.deleteOne({
+            _id: productId,
+            owner: userId
         });
 
-        const savedProduct = await product.save();
-        console.log(product);
+        if (deleteResult.deletedCount === 0) {
+            console.error(`Failed attempt to delete: product with id ${productId} not found`);
+            res.redirect('/products');
+        }
+    }catch (err){
+        next(err);
+    }        
 
-        res.status(201).json(product);
+    },
+
+    add: async (req, res, next) => {
+        const result = validationResult(req);
+        const formData = matchedData(req, { includeOptionals: true });
+        res.render('addProduct.html', {
+        title: 'Añadir Nuevo Producto',
+        errors: [], 
+        formData: {} 
+    });
+},
+
+    create: async (req, res, next) => {
+
+        const productData = matchedData(req);
+        productData.owner = req.session.userId;
+
+        const newProduct = new Product(productData);
+
+        try{
+            const savedProduct = await newProduct.save();
+            console.log(newProduct);
+            res.redirect('/products');
+        } catch (err) {
+        next(err);
     }
+}
 }
