@@ -10,4 +10,5 @@ export const router = express.Router();
 router.get('/products',productController.getAll);
 router.post('/products', productController.add);
 
+
 //User

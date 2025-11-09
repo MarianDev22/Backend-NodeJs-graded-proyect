@@ -21,25 +21,7 @@ router.get('/', guard, (req, res, next) => {
     res.render('home.html');
 });
 
-router.get('/products', guard, async (req, res, next) => {
-
-    try {
-        const products = await Product.find();
-        console.table(products)
-
-        res.render('products.html', {
-            title: 'LISTA DE PRODUCTOS',
-            message: 'Estos son los productos a la venta',
-            productos: products,
-            nombreProd1: products[0].name,
-            nombreProd2: products[1].name,
-            nombreProd3: products[2].name,
-        });
-    } catch(ex) {
-        next(ex);
-    }
-    
-});
+router.get('/products', guard, productController.getAll);
 
 router.get('/login', loginController.index);
 router.post('/login', loginController.login);
