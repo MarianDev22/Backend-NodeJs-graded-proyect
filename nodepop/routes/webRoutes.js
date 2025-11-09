@@ -7,9 +7,13 @@ import { Product } from '../models/Product.js';
 import { productController } from '../controllers/productController.js';
 import { loginController } from '../controllers/loginController.js';
 
+//MW
+import { guard } from '../lib/middlewares/authMiddleware.js';
+
+
 export const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', guard, (req, res, next) => {
     // res.status(200).send(`
     //     <h1>Bienvenido a nuestro servidor</h1>
     //     <p>Este servidor esta escrito con node.js</p>
@@ -17,7 +21,7 @@ router.get('/', (req, res, next) => {
     res.render('home.html');
 });
 
-router.get('/products', async (req, res, next) => {
+router.get('/products', guard, async (req, res, next) => {
 
     try {
         const products = await Product.find();
@@ -38,5 +42,6 @@ router.get('/products', async (req, res, next) => {
 });
 
 router.get('/login', loginController.index);
-// router.post('/login', loginController.login);
-// router.get('/logout', loginController.logout);
+router.post('/login', loginController.login);
+router.get('/logout', loginController.logout);
+
