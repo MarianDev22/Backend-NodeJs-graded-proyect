@@ -57,7 +57,7 @@ router.get('/products',
 router.post('/products/:id/delete',
     param('id')
     .notEmpty()
-    .isString(),
+    .isMongoId(),
     guard, productController.delete);
 
 router.get('/addProduct', guard, productController.add);

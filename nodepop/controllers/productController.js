@@ -59,9 +59,7 @@ export const productController ={
         const data = matchedData(req);
 
         if (!result.isEmpty()) {
-            return res.status(400).json({
-                errors:result.errors
-            })
+            return res.redirect('/products');
         }
         
     try {
@@ -74,7 +72,7 @@ export const productController ={
 
         if (deleteResult.deletedCount === 0) {
             console.error(`Failed attempt to delete: product with id ${productId} not found`);
-            res.redirect('/products');
+            return res.redirect('/products');
         }
     }catch (err){
         next(err);
