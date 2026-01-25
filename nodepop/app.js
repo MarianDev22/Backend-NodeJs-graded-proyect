@@ -40,7 +40,10 @@ app.use((req, res, next) => {
 });
 
 //Environment
-
+app.use((req,res, next) => {
+    res.locals.appName = "NodePop";
+    next();
+})
 
 //Filters
 app.use(sessionMW);

@@ -61,7 +61,8 @@ export const productController ={
         if (!result.isEmpty()) {
             //return next()
             return res.redirect('/products');
-        }
+        };
+        
         
     try {
         const userId = req.session.userId;
@@ -70,34 +71,40 @@ export const productController ={
             _id: productId,
             owner: userId
         });
+        
 
         if (deleteResult.deletedCount === 0) {
             console.error(`Failed attempt to delete: product with id ${productId} not found`);
-            return res.redirect('/products');            
+            return res.redirect('/products');
         }
+        return res.redirect('/products');
+    
     }catch (err){
         next(err);
     }        
 
     },
 
-    add: async (req, res, next) => {
-        const result = validationResult(req);
+    add:  (req, res, next) => {
+
         const formData = matchedData(req, { includeOptionals: true });
         res.render('addProduct.html', {
         title: 'Añadir Nuevo Producto',
-        errors: [], 
-        formData: {} 
+        //errors: [], 
+        //formData: {} 
     });
 },
 
     create: async (req, res, next) => {
 
+        const result = validationResult(req)
+
         const productData = matchedData(req);
+        console.log(productData)
         productData.owner = req.session.userId;
 
         const newProduct = new Product(productData);
-
+        
         try{
             const savedProduct = await newProduct.save();
             console.log(newProduct);
