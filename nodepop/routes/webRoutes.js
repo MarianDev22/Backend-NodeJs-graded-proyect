@@ -15,10 +15,7 @@ import { guard } from '../lib/middlewares/authMiddleware.js';
 export const router = express.Router();
 
 router.get('/', guard, (req, res, next) => {
-    // res.status(200).send(`
-    //     <h1>Bienvenido a nuestro servidor</h1>
-    //     <p>Este servidor esta escrito con node.js</p>
-    // `);
+
     res.render('home.html');
 });
 

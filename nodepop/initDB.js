@@ -1,13 +1,23 @@
 import { connectMongoose } from './lib/connectMongoose.js'
 import { User } from './models/User.js';
 import { Product } from './models/Product.js';
+import redline from 'node:readline/promises'
 
 const connection = await connectMongoose();
 console.log(`Connected to MongoDB: ${connection.name}`);
 
+const answer = await ask('Estas seguro que deseas eliminar toda la información de la base de datos? [y/N] ');
+if (answer.toLowerCase() !== 'y') {
+    console.log('Script abortado');
+    process.exit(0);
+}
+
 
 await initUsers();
 await initProducts();
+
+await connection.close();
+process.exit(0);
 
 async function initUsers() {
 
@@ -49,4 +59,15 @@ async function initProducts() {
     const insProducts = await Product.insertMany(PRODUCTS);
     console.log(`Inserted ${insProducts.length} users`);
 
+}
+
+
+async function ask(question) {
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+    const result = await rl.question(question);
+    rl.close();
+    return result;
 }

@@ -19,6 +19,7 @@ import { sessionMW, sessionStatus } from './lib/middlewares/authMiddleware.js';
 const app = express();
 
 app.use(express.static('public'));
+
 // template-engine
 app.set('view engine', 'ejs');
 app.engine('html', renderFile);
