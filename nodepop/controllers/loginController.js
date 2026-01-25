@@ -3,6 +3,8 @@ import { User } from '../models/User.js';
 
 export const loginController = {
     index: (req,res,next) => {
+        res.locals.email = '';
+        res.locals.errors = '';
         res.render('login.html');
 
     },
@@ -17,6 +19,8 @@ export const loginController = {
 
            
             if (!user||!(await user.comparePassword(req.body.password))) {
+                res.locals.email = req.body.email;
+                res.locals.errors = 'Las credenciales son inválidas';
                 return !res.render('login.html')
             }
             
