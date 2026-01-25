@@ -58,14 +58,15 @@ router.post('/products/:id/delete',
     guard, productController.delete);
 
 router.get('/addProduct', guard, productController.add);
+
 router.post('/addProduct',
     body ('name', 'Must be a valid name')
         .notEmpty()
         .isString(),
-    body ('tag', 'Must be a valid tag')
+    body ('tags', 'Must be a valid tag')
         .optional()
         .isIn(['work', 'lifestyle', 'motor', 'mobile']),
-    body ('Price', 'Must be a valid positive number')
+    body ('price', 'Must be a valid positive number')
         .notEmpty()
         .isInt({ min: 1 })
         .toInt(),
