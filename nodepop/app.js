@@ -11,7 +11,6 @@ import { serverErrorHandler, notFoundErrorHandler } from './lib/middlewares/erro
 
 // Routes
 import { router as webRouter } from './routes/webRoutes.js';
-import { router as apiRouter } from './routes/apiRoutes.js';
 import { sessionMW, sessionStatus } from './lib/middlewares/authMiddleware.js';
 
 // -- END OF IMPORTS --
@@ -51,7 +50,7 @@ app.use(sessionStatus);
 
 //Routes
 app.use('/', webRouter);
-app.use('/api', apiRouter);
+
 
 app.use((req, res, next) => {
 

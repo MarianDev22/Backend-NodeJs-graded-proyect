@@ -43,7 +43,7 @@ router.get('/products',
     query('name', 'Must be a valid name')
         .optional()
         .isString(),
-    query('tag', 'Must be a valid tag')
+    query('tags', 'Must be a valid tag')
         .optional()
         .isIn(['work', 'lifestyle', 'motor', 'mobile']),
     query('sort', 'Must be a valid field')
@@ -68,8 +68,8 @@ router.post('/addProduct',
         .isIn(['work', 'lifestyle', 'motor', 'mobile']),
     body ('price', 'Must be a valid positive number')
         .notEmpty()
-        .isInt({ min: 1 })
-        .toInt(),
+        .isFloat({ min: 1 })
+        .toFloat(),
     guard, productController.create);
 
 

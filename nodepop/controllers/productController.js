@@ -25,10 +25,12 @@ export const productController ={
             if (data.minPrice) filter.price.$gte = data.minPrice;
             if (data.maxPrice) filter.price.$lte = data.maxPrice;
   }
-        if (data.tag) {
-            filter.tag = data.tag;
+        if (data.tags) {
+            console.log(data.tags)
+            filter.tags = data.tags;
         }
         const sortField = data.sort || 'name'
+        console.log(filter)
 
     try {
         
@@ -41,7 +43,7 @@ export const productController ={
       
         res.render('products.html', {
             title: 'LISTA DE PRODUCTOS',
-            message: 'Estos son los productos a la venta',
+            message: 'Estos son los productos del usuario',
             userId,
             productos: products,
             currentfilters: data
@@ -74,7 +76,7 @@ export const productController ={
         
 
         if (deleteResult.deletedCount === 0) {
-            console.error(`Failed attempt to delete: product with id ${productId} not found`);
+            console.error(`Error al intentar borrar: el producto con id ${productId} no se ha encontrado`);
             return res.redirect('/products');
         }
         return res.redirect('/products');
