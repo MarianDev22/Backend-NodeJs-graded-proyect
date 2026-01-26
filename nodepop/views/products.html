@@ -6,64 +6,113 @@
     <title>Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100 bg-light">
 
   <%-include ('_navbar.html')%>
 
-    <div class="container">
-        <h2><%= title %></h2>
+  <main class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="fw-bold"><%= title %></h2>
         <p class="text-muted"><%= message %></p>
+      </div>
+      <a href="/addProduct" class="btn btn-primary shadow-sm">Nuevo Producto</a>
     </div>
 
-    <div class="container">
-        <p><strong>Usuario ID:</strong> <%= userId %></p>
+    <div class="card border-0 shadow-sm mb-5">
+        <div class="card-body p-4">
+          <h5 class="card-title mb-3">Filtrar búsqueda</h5>
+          <form method="get" action="/products" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label small fw-bold">Nombre</label>
+                <input type="text" name="name" class="form-control" placeholder="nombre del producto">
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label small fw-bold">Etiqueta</label>
+                <select name="tags" class="form-select" >
+                  <option  value="">Todos</option>
+                  <option name="tags" value="work">work</option>
+                  <option name="tags" value="lifestyle">lifestyle</option>
+                  <option name="tags" value="motor">motor</option>
+                  <option name="tags" value="mobile">mobile</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small fw-bold">Precio mín</label>
+              <input type="number" name="minPrice" class="form-control">
+            </div>
+
+            <div class="col-md-2">
+              <label class="form-label small fw-bold">Precio máx</label>
+              <input type="number" name="maxPrice" class="form-control">
+            </div>
+            <div class="col-md-2">
+              <label class="form-label small fw-bold">Ordenar por</label>
+                <select name="sort" class="form-select">
+                  <option value="name">Nombre</option>
+                  <option value="price">Precio</option>
+                </select>
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+              <button class="btn btn-dark w-100" type="submit">Buscar</button>
+            </div>
+              </form>
+        </div>
     </div>
-    
-<form method="get" action="/products">
-      <label>Nombre: <input type="text" name="name"></label>
-      <label>Tag:
-        <select name="tag" >
-          <option value="">Todos</option>
-          <option value="work">work</option>
-          <option value="lifestyle">lifestyle</option>
-          <option value="motor">motor</option>
-          <option value="mobile">mobile</option>
-        </select>
-        </label>
-      <label>Precio mín: <input type="number" name="minPrice"></label>
-      <label>Precio máx: <input type="number" name="maxPrice"></label>
-      <label>Ordenar por:
-        <select name="sort">
-          <option value="name">Nombre</option>
-          <option value="price">Precio</option>
-        </select>
-        </label>
-      <button type="submit">Buscar</button>
-    </form>
 
-    <h2>Productos</h2>
-    <ul>
-      <% if (productos && productos.length > 0) { %>
-        <% productos.forEach(p => { %>
-          <li>
-            <strong><%= p.name %></strong> - $<%= p.price %>
-            <% if (p.tags && p.tags.length > 0) { %>
-              (<%= p.tags.join(', ') %>)
-            <% } %>
-            <form method="POST" action="/products/<%= p._id %>/delete" style="display:inline;">
-                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas borrar este producto?');">
-                    Borrar
-                </button>
-            </form>
-        </li>
-        <% }) %>
-      <% } else { %>
-        <li>No hay productos disponibles</li>
-        <% } %>
-    </ul>
+    <div class="row">
+          <!-- <h2>Productos</h2>
+          <ul> -->
+            <% if (productos && productos.length > 0) { %>
+              <div class="table-responsive bg-white rounded shadow-sm"></div>
+                <div class="table-responsive bg-white rounded shadow-sm">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Etiquetas</th>
+                        <th class="text-end">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% productos.forEach(p => { %>
+                        <tr>
+                              <td class="fw-bold"><%= p.name %></td>
+                              <td><span class="badge bg-success-subtle text-success fs-6">$<%= p.price %></span></td> 
+                              <td>
+                              <% if (p.tags && p.tags.length > 0) { %>
+                                <% p.tags.forEach(tag => { %>
+                                  <span class="badge border text-dark fw-normal"><%= tag %></span>
+                                <% }) %>
+                              <% } %>
+                              </td>
+                              <td class="text-end">
+                              <form method="POST" action="/products/<%= p._id %>/delete" class="d-inline">
+                                  <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('¿Seguro que deseas borrar <%=p.name%>');">
+                                      Eliminar
+                                  </button>
+                              </form>
+                          </td>
+                        </tr>
+                      <% }) %>
+                    </tbody>
+                  </table>
+                  </div>
+                    <% } else { %>
+                      <div class="alert alert-info text-center">
+                        No se encotraron productos con los criterios de búsqueda solicitados
+                      </div>
+                      <% } %>
+                
+              </div>
 
-    <a href="/addProduct">Nuevo producto</a>
-    
+
+    </div>
+  </main>
   <%-include ('_footer.html')%>
   </body>
 </html>
+

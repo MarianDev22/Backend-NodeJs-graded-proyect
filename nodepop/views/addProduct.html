@@ -8,6 +8,7 @@
   </head>
 <body class="d-flex flex-column min-vh-100">
     <%-include ('_navbar.html')%>
+    
     <div class="container">
         <form method="POST" action="/addProduct" class="row g-3">
         <div class="col-md-6">
@@ -16,10 +17,10 @@
         </div>
         <div class="col-md-6">
             <label for="product-price" class="form-label">Precio</label>
-            <input type="number" class="form-control" name="price" id="product-price">
+            <input type="number" class="form-control" name="price" id="product-price" step="any" >
         </div>
         <div class="col-12">
-            <label for="input-tag" class="form-label">Etiqueta</label>
+            <label for="input-tag" class="form-label">Etiqueta - elige más de una con ctrl/cmd</label>
             <select class="form-select" id="input-tag" name="tags" required multiple>
                     <option value="work">work</option>
                     <option value="lifestyle">lifestyle</option>
