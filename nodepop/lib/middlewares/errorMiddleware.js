@@ -5,7 +5,7 @@ export function serverErrorHandler(error, req, res, next) {
         res.status(500).render(
             'error.html',
             {
-                errNumber: 500,
+                errNumber: 500, 
                 title: 'Internal Server Error',
                 message: 'Unexpected Error. Try again later'
             }
