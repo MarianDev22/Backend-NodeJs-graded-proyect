@@ -7,7 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --env-file=.env bin/www",
-    "start": "node bin/www",
+    "start": "node --env-file=.env.prod bin/www",
     "init": "node --env-file=.env initDB.js"
   },
   "repository": {
